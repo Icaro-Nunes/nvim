@@ -51,7 +51,6 @@ return require('packer').startup(function(use)
 	  }
   }
 
-
   use {
       'akinsho/flutter-tools.nvim',
       requires = {
@@ -59,5 +58,49 @@ return require('packer').startup(function(use)
           'stevearc/dressing.nvim', -- optional for vim.ui.select
       },
   }
+
+  use {'mfussenegger/nvim-dap',
+  requires = {
+    'williamboman/mason.nvim',
+    'jay-babu/mason-nvim-dap.nvim',
+  },
+  config = function()
+    local dap = require("dap")
+
+    -- setup mason and ensure cpptools is installed
+    require("mason").setup()
+    require("mason-nvim-dap").setup({
+      ensure_installed = {'cpptools'}
+    })
+
+    -- setup cpptools adapter
+    dap.adapters.cpptools = {
+      type = 'executable';
+      name = "cpptools",
+      command = vim.fn.stdpath('data') .. '/mason/bin/OpenDebugAD7',
+      args = {},
+      attach = {
+        pidProperty = "processId",
+        pidSelect = "ask"
+      },
+    }
+
+    -- this configuration should start cpptools and the debug the executable main in the current directory when executing :DapContinue
+    dap.configurations.cpp = {
+      {
+        name = "Launch",
+        type = "cpptools",
+        request = "launch",
+        program = '${workspaceFolder}/out/m',
+        cwd = '${workspaceFolder}',
+        stopOnEntry = true,
+        args = {"<", "${workspaceFolder}/cases/case"} ,
+        runInTerminal = false,
+      },
+    }
+  end,
+}
+
+use "rcarriga/nvim-dap-ui"
 
 end)
