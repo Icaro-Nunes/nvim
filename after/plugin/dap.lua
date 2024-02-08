@@ -29,6 +29,13 @@ dap.configurations.cpp = {
     stopOnEntry = true,
     args = {"<", "${workspaceFolder}/cases/case"} ,
     runInTerminal = false,
+    setupCommands = {
+      {
+        text = '-enable-pretty-printing',
+        description = 'enable pretty printing',
+        ignoreFailures = false
+      }
+    }
   },
 }
 
