@@ -60,12 +60,15 @@ return require('packer').startup(function(use)
   }
 
   use {'mfussenegger/nvim-dap',
-  requires = {
-    'williamboman/mason.nvim',
-    'jay-babu/mason-nvim-dap.nvim',
-  },
-}
+    requires = {
+      'williamboman/mason.nvim',
+      'jay-babu/mason-nvim-dap.nvim',
+    },
+  }
 
-use "rcarriga/nvim-dap-ui"
-
+  use { "rcarriga/nvim-dap-ui",
+    requires = {
+      'nvim-neotest/nvim-nio',
+    }
+  }
 end)
